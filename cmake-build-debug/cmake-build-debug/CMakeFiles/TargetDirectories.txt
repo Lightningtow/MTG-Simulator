@@ -1,3 +1,0 @@
-C:/Users/alexw/CLionProjects/goldfish/cmake-build-debug/CMakeFiles/goldfish.dir
-C:/Users/alexw/CLionProjects/goldfish/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/alexw/CLionProjects/goldfish/cmake-build-debug/CMakeFiles/rebuild_cache.dir
