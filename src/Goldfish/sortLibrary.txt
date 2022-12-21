@@ -1,0 +1,177 @@
+
+
+This is my attempt at a sorting function, for sorting an array with only two values.
+(It compared multiple Cards, but the overloads were structured in such a way that within a search algorithm, there were only two values.)
+I'll explain this using 0 and 1 as the sorted values, rather than lands and nonlands, which is what the search algorithm was looking for.
+However, keep in mind that each 0 or 1 is actually a completely different Card object, and as such, we can't simply overwrite a
+0 with another 0, because they are in different objects.
+
+
+The temp array would be structured like this:
+[0 0 0 0 X             Y 1 1 1 1]
+The X marks the end of the part of the sorted section for zeroes. The Y marks the beginning of the sorted section for 1s.
+The indices between X and Y are empty.
+
+It works iterating through an array, and if a 0 was found it'd move it to the first free slot in the top of the array, X,
+and then updates X to a new position. If a 1 was found, it'd move it to the first free slot at the bottom, or Y. It then updates Y.
+
+
+I don't know if I explained this well at all. I also don't remember if the code below actually works,
+or if I realized a sorted library wouldn't work within my program before I finished this, and scrapped it halfway.
+I just wanted to mention this because I think it's kind of a neat idea. I'm not the first to come up with
+this by far, I later read about the "Dutch national flag problem," to which a very similar solution was proposed.
+However, I did come up with this solution by myself and on my own. I believe that as long as you come up with an idea yourself, it doesn't
+devalue your work if someone beat you to it. Especially if the person in question died before you were even born, thus giving you no opportunity
+to come up with it first, haha.
+
+
+void Goldfish::sortLibrary() {
+    // TIME COMPLEXITY CAN BE LOWERED FROM LINEAR TO (i believe) LOG
+    // because the linearity comes from copying between arrays
+
+    // well the complexity is still linear, because it needs to pass through the whole array once
+    // time complexity is O(n + L) where n is # of cards in deck, and L is number of land cards
+    // however, I can reduce this by saying "put only X lands on top"
+    // which also makes it way faster to shuffle, if all you need to do is take the top card and put it somewhere in the middle
+
+    shuffleLibrary();
+
+//    cout << *library << endl;
+//    cout << "/\\  post shuffle" << endl;
+//    auto* temp = new ArrayStack<Card>(60);
+//    int DECKSIZE = library->getLength();
+    int len = library->getLength(); // THIS IS NECESSARY BECAUSE WHAT IF LIBRARY ISN'T FULL
+    // USING DECKSIZE WILL CRASH IT
+//    Card unsorted[len]; // this is a normal array so I can use [] notation
+//    Card sortarr[len]; // i would do `sorted` but thats already a bool in main class
+//    cout << "here?" << endl;
+//    Card inplace[len];
+    Card temp[len];
+    int tempsize = 0;
+    //lets call this "move library into temp"
+//    for(int i = 0; i < len; i++) { // this loop copies `library` ArrayStack into `temp` normal array
+//        Card curr = library->peek();
+//        temp[len-i-1] = curr; //just `temp[i]` reverses the order
+////        inplace[len-i-1] = curr; //just `temp[i]` reverses the order
+//        library->pop();
+//    }
+
+//    cout << " " << endl << endl << endl << endl << endl;
+//    coutArr(inplace, len, true);
+
+
+
+
+    // current implementation, which uses only one array
+    // if land move to new array, if nonland rotate
+    for(int i = 0; i < len; i++) {
+        Card curr = library->peek();
+        if(curr.type != Card::land) {
+            temp[tempsize] = curr;
+            tempsize++;
+            library->pop();
+//            cout << "MOVING " << curr << " TO TEMP" << endl;
+        }
+        else { // if nonland
+//            cout << "ROTATING AWAY " << curr << endl;
+            library->rotate(Stack<Card>::RIGHT);
+//            second--;
+        }
+        if(tempsize == landsInDeck) {
+            // short circuit check. for example, if you have 20 lands and they're all at the top
+            // they'll end up in temp, with 40 nonlands in library
+            // if not for this short circuit, this algo would continue to the end,
+            // checking all the nonlands even when sorting is done
+
+            cout << "SHORT CIRCUITING AT " << tempsize << endl;
+            break;
+        }
+
+    }
+//    string eq = "==========================================";
+//    cout << eq << " before joining " << eq << endl;
+//    cout << "=== start temp ====" << endl;
+//    coutArr(temp, tempsize, true);
+//    cout << "=== end temp ====" << endl;
+//    cout << *library << endl;
+
+    // when this line passes, library should be only nonlands, and temp should be only lands
+    // this/\ is where I could set it to push only a limited amount of lands, by keeping a total of lands sent
+    // and then terminating when it hits a certain number
+    // then push temp back to library, thus stacking lands on top
+    for(int i = 0; i < tempsize; i++) {
+//        cout << "PUSHING " << temp[i] << endl;
+        library->push(temp[i]);
+    }
+
+//    cout << eq << " after joining " << eq << endl;
+
+//    cout << *library << endl;
+//    cout << " " << endl << endl << endl << endl << endl;
+
+    // LANDS THEN NONLANDS
+
+
+
+
+    // I want to show you my iterations of my sorting algorithm, I'm kinda proud of em :D
+    // I'm sure there's some comparable algorithm for each of mine, but I wanted to do it myself
+
+
+    // this is how they worked:
+    // sort the lands to beginning of array and nonlands to end of array
+    // example array placement, 0 is land, 1 is nonland, and `x` means "random 0 or 1, this is unsorted"
+    // [0 0 0 0 first x x x x second 1 1 1 1]
+    // so the sorted portion of the array is from arr[0] to arr[first], then unsorted junk,
+    // then another, separate sorted portion from arr[second] to arr[END]
+
+
+    // old implementation, for copying between two temporary arrays
+    // it works, but needed two temporary arrays, and I figured I could do better
+// *code to move library into unsorted*
+
+
+//    int first = 0;            // end of the first sorted portion. Beginning is the beginning of the array
+//    int second = len-1;       // beginning of the second sorted portion. End is the end of the array
+//    for(int i = 0; i < len; i++) {
+//        Card curr = unsorted[i];
+//        if(curr.type == Card::land) {
+//            sortarr[first] = curr;
+//            first++;
+//        }
+//        else {
+//            sortarr[second] = curr;
+//            second--;
+//        }
+//    }
+
+
+
+
+    // failed implementation, for the same logic except sorting the array in place, not using another array
+    // (it was overwriting elements and butchering the list, and in order to fix, it would ratchet up the time complexity)
+
+// *code to move library into inplace*
+//    int first = 0;         // end of the first sorted portion. Beginning is the beginning of the array
+//    int second = len-1;    // beginning of the second sorted portion. End is the end of the array
+//    for(int i = 0; i < second-1; i++) {
+//        Card curr = inplace[i];
+//        if(curr.type == Card::land) {
+//            inplace[first] = curr;
+//            first++;
+//        }
+//        else if (curr.type != Card::land){
+//            inplace[second] = curr;
+//            second--;
+//        }
+//        else {
+//            string e = "error in sortLibrary, invalid card type";
+//            cout << e << endl;
+//            throw(e);
+//        }
+//    }
+
+
+
+
+}

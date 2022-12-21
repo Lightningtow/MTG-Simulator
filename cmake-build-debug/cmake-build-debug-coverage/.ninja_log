@@ -1,0 +1,8 @@
+# ninja log v5
+19	110	6905311168878703	CMakeFiles/goldfish.dir/getStat.cpp.obj	d73f035491f1e4c8
+34	430	6905311172093761	CMakeFiles/goldfish.dir/Card.cpp.obj	793a94eb6c1e68d4
+27	437	6905311172180078	CMakeFiles/goldfish.dir/GameResult.cpp.obj	dd794cc0aea56cd1
+28	687	6905325363756885	CMakeFiles/goldfish.dir/getCardData.cpp.obj	193aebd12a4ad0bb
+17	762	6905325364724635	CMakeFiles/goldfish.dir/main.cpp.obj	d89996fcf5762e39
+4	930	6905325366408319	CMakeFiles/goldfish.dir/Goldfish.cpp.obj	86466878bd04d99
+930	1114	6905325368210470	goldfish.exe	9983566eedf60f55
